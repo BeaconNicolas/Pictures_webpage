@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+  <meta name="theme-color" content="#0c0c0d">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preload" href="photos.json" as="fetch" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css?v={{version}}">
+  <script src="assets/app.js?v={{version}}" defer></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></symbol>
+      <symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20M10.5 8v5M8 10.5h5"/></symbol>
+      <symbol id="i-zoom-out" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20M8 10.5h5"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+      <symbol id="i-shrink" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 7.5l4-4 4 4M6 11H5v9h14v-9h-1"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="masthead" id="masthead">
+    <a class="hero" id="hero" hidden>
+      <img class="hero-img" id="hero-img" alt="" fetchpriority="high" decoding="async">
+    </a>
+    <div class="masthead-text">
+      <h1 class="site-title">{{title}}</h1>
+      <p class="site-subtitle">{{subtitle}}</p>
+      <p class="site-meta" id="site-meta"></p>
+    </div>
+  </header>
+
+  <nav class="albums" id="albums" aria-label="Albums" hidden></nav>
+
+  <main class="main">
+    <div class="gallery" id="gallery"></div>
+    <section class="empty" id="empty" hidden>
+      <h2>No photos yet</h2>
+      <p>Add your pictures to the <code>photos/</code> folder and push. They'll appear here in full resolution.</p>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer"></footer>
+
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <div class="viewer-stage" id="stage">
+      <img class="viewer-img" id="viewer-img" alt="" draggable="false">
+    </div>
+    <div class="viewer-spinner" id="spinner" aria-hidden="true"></div>
+    <p class="viewer-badge" id="badge" role="status"></p>
+
+    <div class="viewer-bar viewer-top">
+      <span class="viewer-counter" id="counter"></span>
+      <div class="viewer-actions">
+        <button class="icon-btn" id="btn-zoom" type="button" title="Zoom to actual pixels (Z)" aria-label="Zoom"><svg><use href="#i-zoom-in"/></svg></button>
+        <button class="icon-btn" id="btn-play" type="button" title="Slideshow (Space)" aria-label="Slideshow"><svg><use href="#i-play"/></svg></button>
+        <button class="icon-btn" id="btn-info" type="button" title="Details (I)" aria-label="Details" aria-pressed="false"><svg><use href="#i-info"/></svg></button>
+        <button class="icon-btn" id="btn-share" type="button" title="Share link" aria-label="Share link"><svg><use href="#i-share"/></svg></button>
+        <a class="icon-btn" id="btn-download" title="Download original (D)" aria-label="Download original"><svg><use href="#i-download"/></svg></a>
+        <button class="icon-btn" id="btn-fullscreen" type="button" title="Full screen (F)" aria-label="Full screen"><svg><use href="#i-expand"/></svg></button>
+        <button class="icon-btn" id="btn-close" type="button" title="Close (Esc)" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+      </div>
+    </div>
+
+    <button class="viewer-nav viewer-prev" id="btn-prev" type="button" title="Previous (←)" aria-label="Previous photo"><svg><use href="#i-prev"/></svg></button>
+    <button class="viewer-nav viewer-next" id="btn-next" type="button" title="Next (→)" aria-label="Next photo"><svg><use href="#i-next"/></svg></button>
+
+    <div class="viewer-bar viewer-bottom">
+      <p class="viewer-title" id="viewer-title"></p>
+      <p class="viewer-exif" id="viewer-exif"></p>
+    </div>
+
+    <aside class="viewer-info" id="info" aria-label="Photo details" hidden></aside>
+  </div>
+
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+  <noscript><p class="noscript">This gallery needs JavaScript to show the photos.</p></noscript>
+</body>
+</html>

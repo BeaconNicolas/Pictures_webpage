@@ -1,0 +1,10 @@
+{
+  "title": "Pictures",
+  "subtitle": "Photographs in high definition",
+  "author": "",
+  "cover": "",
+  "sort": "date-desc",
+  "sizes": [480, 960, 1600, 2560, 3840],
+  "quality": 82,
+  "allowDownload": true
+}
